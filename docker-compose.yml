@@ -1,0 +1,18 @@
+services:
+  exist:
+    # existdb/existdb:release currently resolves to 7.0.0-beta3 (same image
+    # digest, checked 2026-09-15). Override with EXISTDB_TAG to test another
+    # version, e.g. EXISTDB_TAG=7.0.0-SNAPSHOT or EXISTDB_TAG=6.4.1.
+    image: existdb/existdb:${EXISTDB_TAG:-release}
+    ports:
+      - "8080:8080"
+    environment:
+      # broken (default): sm:create-account called inline from finish.xql,
+      # inside the StartupTrigger. fixed: same call deferred to a scheduled
+      # one-off job. See pkg/finish.xql.
+      REPRO_MODE: ${REPRO_MODE:-broken}
+    volumes:
+      # No data volume: every `docker compose up` starts from a clean,
+      # unregistered database, so AutoDeploymentTrigger always re-installs
+      # the package and re-runs finish.xql.
+      - ./build/startup-trigger-repro.xar:/exist/autodeploy/startup-trigger-repro.xar:ro

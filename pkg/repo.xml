@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<meta xmlns="http://exist-db.org/xquery/repo">
+    <description>Repro: sm:create-account called from finish.xql always fails
+    - a bootstrap ordering issue, see README.</description>
+    <finish>finish.xql</finish>
+    <permissions user="admin" group="dba" mode="rw-rw-r--"/>
+    <target>startup-trigger-repro</target>
+</meta>
